@@ -7,9 +7,7 @@ void NhapMangVector(vector<int> &a, int n)
 {
     for(int i = 0; i < n; i++)
         {
-            int value;
-            cin >> value;
-            a.push_back(value);
+            cin >> a[i];
         }
 }
 
@@ -231,12 +229,143 @@ void MergeSort2(vector<int> &a, int left, int right)
     }
     cout << "\n";
 }
+
+//Cach 3 (khong dung de quy)
+//Ham merge (ascending)
+void MergeASC(vector<int> &a, vector<int> left, int n, vector<int> right, int m, int k)
+{
+    int count = 0;
+    int i = 0;
+    int j = 0;
+    int dieukien = k;
+    while(dieukien <= max(n,m))
+    {
+        while((i < dieukien && i < n) && (j < dieukien && j < m))
+        {
+            if(left[i] < right[j])
+            {
+                a[count] = left[i];
+                i++;
+                count++;
+            }
+
+            else 
+            {
+                a[count] = right[j];
+                j++;
+                count++;
+            }
+        }
+
+            while(i < dieukien && i < n)
+            {
+                a[count] = left[i];
+                i++;
+                count++;
+            }
+
+            while(j < dieukien && j < m)
+            {
+                a[count] = right[j];
+                j++;
+                count++;
+            }
+    
+        dieukien += k;
+    }
+}
+
+// Ham Merge (Descending)
+void MergeDES(vector<int> &a, const vector<int> left, int n, const vector<int> right, int m, int k)
+{
+    int i = 0; 
+    int j = 0;
+    int count = 0;
+    int dieukien = k;
+    while(dieukien <= max(n, m))
+    {
+        while((i < dieukien && i < n) && (j < dieukien && j < m))
+        {
+            if(left[i] > right[j])
+            {
+                a[count] = left[i];
+                i++;
+                count++;
+            }
+
+            else
+            {
+                a[count] = right[j];
+                j++;
+                count++;
+            }
+        }
+
+        while(i < dieukien && i < n)
+        {
+            a[count] = left[i];
+            i++;
+            count++; 
+        }
+
+        while(j < dieukien && j < m)
+        {
+            a[count] = right[j];
+            j++;
+            count++;
+        }
+        dieukien += k;
+    }
+}
+
+//Ham MergeSort
+void MergeSort3(vector<int> &a, int n, int k)
+{
+    int mid = (n / 2) + 1;
+    cout << "Sap xep:\n";
+    while(k < n)
+    {
+        cout << "k = " << k << "\n"; 
+        cout << "Mang A (truoc khi chia): ";
+        XuatMangVector(a, n);
+        cout << "\n";
+        // Tach thanh hai mang con
+        vector<int> l;
+        vector<int> r;
+        
+        for(int i = 0; i < n; i += 2 * k)
+        {
+            //gan cho mang ben trai
+            for(int step = 0; step < k && (i + step) < n; step++)
+                l.push_back(a[i + step]);
+
+            //gan cho mang ben phai
+            for(int step = 0; step < k && (i + k + step) < n; step++)
+                r.push_back(a[i + k + step]);
+        }
+
+        cout << "Mang B: ";
+        XuatMangVector(l, l.size());
+        cout << "\n";
+        cout << "Mang C: ";
+        XuatMangVector(r, r.size());
+        cout << "\n";
+
+        //goi ham merge
+        MergeDES(a, l, l.size(), r, r.size(), k);
+        cout << "Mang A (sau khi gop): ";
+        XuatMangVector(a, n);
+        cout << "\n \n";
+        k *= 2;
+    }
+}
+
 int main()
 {
     int n;
     cin >> n;
     //vector<int> a{8,3,4,2,1,9,5,7,6,7,2,4,1};
-    vector<int> a;
+    vector<int> a(n);
     NhapMangVector(a, n);
     MergeSort2(a, 0, n - 1);
     return 0;
