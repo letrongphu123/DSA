@@ -360,13 +360,180 @@ void MergeSort3(vector<int> &a, int n, int k)
     }
 }
 
+
+//Heap sort
+void Output(vector<int> a, int n) 
+{
+    for (int i = 0; i < a.size(); i++)
+    {
+        if (i == n && n != a.size())
+            cout << "| ";
+        cout << a[i] << " ";
+    }
+    cout << "\n";
+}
+
+//Ham heapify (Ascending)
+void HeapifyASC(vector<int> &a, int n, int k)
+{
+    int i = 2 * k + 1;
+    while(i < n)
+    {
+        if(i + 1 < n)
+        {
+            if(a[i] < a[i + 1])
+                i = i + 1;
+        }
+
+        if(a[k] >= a[i])
+            return;
+
+        swap(a[k], a[i]);
+        k = i; 
+        i = 2 * k + 1;
+    }
+}
+
+//Ham heapify (Descending)
+void HeapifyDES(vector<int> &a, int n, int k)
+{
+    int i = 2 * k + 1;
+    while(i < n)
+    {
+        if(i + 1 < n)
+        {
+            if(a[i] > a[i + 1])
+                i = i + 1;
+        }
+
+        if(a[k] <= a[i])
+            return;
+        
+        swap(a[k], a[i]);
+        k = i;
+        i = 2 * k + 1;
+    }
+}
+
+//Ham build heap
+void BuildHeap(vector<int> &a, int n)
+{
+    int i = n / 2 - 1;
+    while(i >= 0)
+    {
+        //goi ham heapify
+        HeapifyDES(a, n, i);
+        i--;
+    }
+}
+
+//Ham heap sort
+void HeapSort(vector<int> &a, int n)
+{
+    cout << "Sap xep:\n";
+    BuildHeap(a, n);
+    cout << "Mang sau khi BuildHeap: ";
+    XuatMangVector(a, n);
+    cout << "\n";
+    for(int i = 0; i < n; i++)
+    {
+        if(i > 0)
+        {
+            cout << "Mang sau khi heapify voi n = " << n - i << ": ";
+            Output(a, n - i);
+        }
+        if(n - i != 1)
+            cout << "Swap " << a[0] << " va " << a[n - i - 1] << "\n\n";
+        swap(a[0], a[n - i - 1]);
+        HeapifyDES(a, n - i - 1, 0);
+    }
+}
+
+
+//Quick sort (Ascending)
+void QuickSortASC(vector<int> &a, int left, int right)
+{
+    if(left >= right)
+        return;
+
+    int i = left;
+    int j = right;
+    int pivot = a[(left + right) / 2];
+    cout << "Truoc: ";
+    XuatMangVector(a, a.size());
+    cout << "\n" << "Left=" << left << " - " << "Right=" << right << " - " << "Pivot=" << pivot << "\n";
+    while(i < j)
+    {
+        while(a[i] < pivot)
+            i++;
+        while(a[j] > pivot)
+            j--;
+
+        if(i <= j)
+        {
+            swap(a[i], a[j]);
+            i++;
+            j--;
+        }
+    }
+    cout << "Sau: ";
+    XuatMangVector(a, a.size());
+    cout << "\n\n";
+
+    //goi de quy quick sort
+    QuickSortASC(a, left, j);
+    QuickSortASC(a, i, right);
+}
+
+//Quick sort (Descending)
+void QuickSortDES(vector<int> &a, int left, int right)
+{
+    if(left >= right)  
+        return;
+
+    int i = left;
+    int j = right;
+    int pivot = a[(left + right) / 2];
+    cout << "Truoc: ";
+    XuatMangVector(a, a.size());
+    cout << "\n" << "Left=" << left << " - " << "Right=" << right << " - " << "Pivot=" << pivot << "\n";
+    while(i < j)
+    {
+        while(a[i] > pivot)
+            i++;
+
+        while(a[j] < pivot)
+            j--;
+
+        if(i <= j)
+        {
+            swap(a[i], a[j]);
+            i++;
+            j--;
+        }
+    }
+    cout << "Sau: ";
+    XuatMangVector(a, a.size());
+    cout << "\n\n";
+
+    //goi de quy
+    QuickSortDES(a, left, j);
+    QuickSortDES(a, i, right);
+}
+
 int main()
 {
-    int n;
+    int n = 13;
     cin >> n;
     //vector<int> a{8,3,4,2,1,9,5,7,6,7,2,4,1};
     vector<int> a(n);
     NhapMangVector(a, n);
-    MergeSort2(a, 0, n - 1);
+    cout << "Mang truoc khi sap xep:\n";
+    XuatMangVector(a, n);
+    cout << "\n\n";
+    cout << "Sap xep:\n";
+    QuickSortDES(a, 0, n - 1);
+    cout << "Mang sau khi sap xep:\n";
+    XuatMangVector(a, n);
     return 0;
 }
