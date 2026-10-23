@@ -33,10 +33,8 @@ void NhapMangVectorPair(vector<pair<string, int>> &a, int n)
 {
     for(int i = 0; i < n; i++)
     {
-        pair<string, int> temp;
-        cin >> temp.first;
-        cin >> temp.second;
-        a.push_back(temp);
+        cin >> a[i].first;
+        cin >> a[i].second;
     }
 }
 
