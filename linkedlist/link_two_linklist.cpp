@@ -50,6 +50,7 @@ void PrintList(LIST L)
 
 void Noi(LIST &, LIST);
 
+//ham noi hai danh sach lien ket
 void Noi(LIST &L, LIST R)
 {
     if(R.pHead == nullptr)
@@ -60,6 +61,43 @@ void Noi(LIST &L, LIST R)
         return;
     }
     L.pTail->pNext = R.pHead;
+}
+
+//ham tron hai danh sach lien ket
+void TronDSLK(const LIST &L1, const LIST &L2, LIST &L3)
+{
+    if(L1.pHead == nullptr && L2.pHead == nullptr)
+        return;
+
+    CreateEmptyList(L3);
+    NODE* curentnodeL1 = L1.pHead;
+    NODE* currentnodeL2 = L2.pHead;
+    while(curentnodeL1 != nullptr && currentnodeL2 != nullptr)
+    {
+        if(curentnodeL1->info < currentnodeL2->info)
+        {
+            InsertTail(L3, curentnodeL1);
+            curentnodeL1 = curentnodeL1->pNext;
+        }
+
+        else
+        {
+            InsertTail(L3, currentnodeL2);
+            currentnodeL2 = currentnodeL2->pNext;
+        }
+    }
+
+    while(curentnodeL1 != nullptr)
+    {
+        InsertTail(L3, curentnodeL1);
+        curentnodeL1 = curentnodeL1->pNext;
+    }
+
+    while (currentnodeL2 != nullptr)
+    {
+        InsertTail(L3, currentnodeL2);
+        currentnodeL2 = currentnodeL2->pNext;
+    }
 }
 
 void ClearList(LIST &L)
@@ -77,25 +115,29 @@ void ClearList(LIST &L)
 
 int main()
 {
-    LIST L1, L2;
-    CreateEmptyList(L1);
-    CreateEmptyList(L2);
-    int n; cin >> n;
-    int x;
-    for (int i = 0; i < n; i++){
-        cin >> x;
-        InsertTail(L1, CreateNode(x));
+    int t; cin >> t;
+    LIST L1;
+    LIST L2;
+    LIST L3;
+    for (int pid = 0; pid < t; pid++){
+        CreateEmptyList(L1);
+        int n, m; cin >> n >> m;
+        int x;
+        for (int i = 0; i < n; i++){
+            cin >> x;
+            InsertTail(L1, CreateNode(x));
+        }
+        CreateEmptyList(L2);
+        for (int i = 0; i < m; i++){
+            cin >> x;
+            InsertTail(L2, CreateNode(x));
+        }
+        TronDSLK(L1, L2, L3);
+        PrintList(L3);
+        ClearList(L1);
+        ClearList(L2);
+        ClearList(L3);
+        cout << "\n";
     }
-    int m; cin >> m;
-    for (int i = 0; i < m; i++){
-        cin >> x;
-        InsertTail(L2, CreateNode(x));
-    }
-    Noi(L1, L2);
-    PrintList(L1);
-    cout << "\n";
-    PrintList(L2);
-    ClearList(L1);
-    ClearList(L2);
     return 0;
 }
